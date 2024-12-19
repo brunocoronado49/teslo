@@ -3,6 +3,8 @@ import 'package:teslo/config/config.dart';
 import 'package:teslo/features/auth/domain/domain.dart';
 import 'package:teslo/features/auth/infrastructure/infrastructure.dart';
 
+// Los datasources hacen todas las llamadas a la API
+/// aqui se manejan todos los errores al hacer llamadas
 class AuthDatasourceImpl extends AuthDatasource {
   final dio = Dio(
     BaseOptions(
@@ -27,8 +29,16 @@ class AuthDatasourceImpl extends AuthDatasource {
       final user = UserMapper.userJsonToEntity(response.data);
       return user;
 
+    } on DioException catch (e) {
+      if( e.response?.statusCode == 401 ){
+         throw CustomError(e.response?.data['message'] ?? 'Credenciales incorrectas' );
+      }
+      if ( e.type == DioExceptionType.connectionTimeout ){
+        throw CustomError('Revisar conexión a internet');
+      }
+      throw Exception();
     } catch (e) {
-      throw WrongCredentials();
+      throw Exception();
     }
   }
 

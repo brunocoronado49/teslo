@@ -1,6 +1,7 @@
 //! Crear state del provider
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
+import 'package:teslo/features/auth/presentation/providers/auth_provider.dart';
 import 'package:teslo/features/shared/shared.dart';
 
 class LoginFormState {
@@ -48,7 +49,11 @@ class LoginFormState {
 
 //! Implementar un notifier
 class LoginFormNotifier extends StateNotifier<LoginFormState> {
-  LoginFormNotifier(): super(LoginFormState());
+  final Function(String, String) loginUserCallback;
+
+  LoginFormNotifier({
+    required this.loginUserCallback
+  }): super(LoginFormState());
 
   onEmailChange(String value) {
     final newEmail = Email.dirty(value);
@@ -66,11 +71,11 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
     );
   }
 
-  onFormSubmit() {
+  onFormSubmit() async {
     _touchEveryField();
     if(!state.isValid) return;
 
-    print(state);
+    await loginUserCallback(state.email.value, state.password.value);
   }
 
   _touchEveryField() {
@@ -88,7 +93,8 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
 }
 
 //! Consumir el provider
-final loginFormProvider = StateNotifierProvider.autoDispose<LoginFormNotifier, LoginFormState>(
-  (ref) => LoginFormNotifier(),
-);
+final loginFormProvider = StateNotifierProvider.autoDispose<LoginFormNotifier, LoginFormState>((ref) {
+  final loginUserCallback = ref.watch(authProvider.notifier).loginUser;
+  return LoginFormNotifier(loginUserCallback: loginUserCallback);
+});
 
