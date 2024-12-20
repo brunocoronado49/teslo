@@ -2,7 +2,7 @@ import 'package:formz/formz.dart';
 
 enum NameError { empty }
 
-class Name  extends FormzInput<String, NameError>{
+class Name  extends FormzInput<String, NameError> {
   const Name.pure() : super.pure('');
   const Name.dirty(super.value) : super.dirty();
 

@@ -30,8 +30,12 @@ class AuthState {
 // Contiene la logica para manejar los estadios
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthRepository authRepository;
+  final KeyValueStorageService keyValueStorageService;
 
-  AuthNotifier({required this.authRepository}): super(AuthState());
+  AuthNotifier({
+    required this.authRepository,
+    required this.keyValueStorageService
+  }): super(AuthState());
   
   Future<void> loginUser(String email, String password) async {
     await Future.delayed(const Duration(milliseconds: 500));
@@ -74,6 +78,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(
       user: user,
       authStatus: AuthStatus.authenticated,
+      errorMessage: ''
     );
   }
 
@@ -90,7 +95,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
 // Se usa para llamar al notifier y a los estados para que pedan ser usados
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final authRepository = AuthRepositoryImpl();
+  final keyValueStorageService = KeyValueStorageServiceImpl();
 
-  return AuthNotifier(authRepository: authRepository);
+  return AuthNotifier(
+    authRepository: authRepository,
+    keyValueStorageService: keyValueStorageService,
+  );
 });
 
