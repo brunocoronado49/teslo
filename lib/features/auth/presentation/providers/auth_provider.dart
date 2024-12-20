@@ -49,8 +49,20 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  void registerUser(String email, String password) async {
+  Future<void> registerUser(String email, String password, String name) async {
+    await Future.delayed(const Duration(milliseconds: 500));
 
+    try {
+      final user = await authRepository.register(email, password, name);
+
+      _setLoggedUser(user);
+    } on WrongCredentials {
+      logout('Credenciales incorrectas');
+    } on CustomError catch (e) {
+      logout( e.message );
+    } catch (e){
+      logout( 'Error no controlado' );
+    }
   }
 
   void checkAuthStatus() async {
