@@ -32,16 +32,14 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox( height: 80 ),
     
-                FadeInUp(
-                  child: Container(
-                    height: size.height - 260, // 80 los dos sizebox y 100 el ícono
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: scaffoldBackgroundColor,
-                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(100)),
-                    ),
-                    child: const _LoginForm(),
+                Container(
+                  height: size.height - 260, // 80 los dos sizebox y 100 el ícono
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: scaffoldBackgroundColor,
+                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(100)),
                   ),
+                  child: const _LoginForm(),
                 )
               ],
             ),
@@ -53,24 +51,27 @@ class LoginScreen extends StatelessWidget {
 }
 
 class _LoginForm extends ConsumerWidget {
+
   const _LoginForm();
 
-  void showSnackbar(BuildContext context, String errorMessage) {
+  void showSnackbar( BuildContext context, String message ) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(errorMessage))
+      SnackBar(content: Text(message))
     );
   }
 
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loginForm = ref.watch(loginFormProvider);
-    
-    ref.listen(authProvider, (prev, next) {
-      if(next.errorMessage.isEmpty) return;
 
-      showSnackbar(context, next.errorMessage);
+    final loginForm = ref.watch(loginFormProvider);
+
+    ref.listen(authProvider, (previous, next) {
+      if ( next.errorMessage.isEmpty ) return;
+      showSnackbar( context, next.errorMessage );
     });
+
 
     final textStyles = Theme.of(context).textTheme;
 
@@ -86,19 +87,19 @@ class _LoginForm extends ConsumerWidget {
             label: 'Correo',
             keyboardType: TextInputType.emailAddress,
             onChanged: ref.read(loginFormProvider.notifier).onEmailChange,
-            errorrMessage: loginForm.isFormPosted 
-              ? loginForm.email.errorMessage
-              : null,
+            errorMessage: loginForm.isFormPosted ?
+               loginForm.email.errorMessage 
+               : null,
           ),
           const SizedBox( height: 30 ),
 
           CustomTextFormField(
             label: 'Contraseña',
             obscureText: true,
-            onChanged: ref.read(loginFormProvider.notifier).onPasswordChange,
-            errorrMessage: loginForm.isFormPosted
-              ? loginForm.password.errorMessage
-              : null,
+            onChanged: ref.read(loginFormProvider.notifier).onPasswordChanged,
+            errorMessage: loginForm.isFormPosted ?
+               loginForm.password.errorMessage 
+               : null,
           ),
     
           const SizedBox( height: 30 ),
@@ -109,9 +110,9 @@ class _LoginForm extends ConsumerWidget {
             child: CustomFilledButton(
               text: 'Ingresar',
               buttonColor: Colors.black,
-              onPressed: () {
-                ref.read(loginFormProvider.notifier).onFormSubmit();
-              },
+              onPressed: loginForm.isPosting
+                ? null 
+                : ref.read(loginFormProvider.notifier).onFormSubmit
             )
           ),
 
@@ -122,7 +123,7 @@ class _LoginForm extends ConsumerWidget {
             children: [
               const Text('¿No tienes cuenta?'),
               TextButton(
-                onPressed: () => context.push('/register'), 
+                onPressed: ()=> context.push('/register'), 
                 child: const Text('Crea una aquí')
               )
             ],

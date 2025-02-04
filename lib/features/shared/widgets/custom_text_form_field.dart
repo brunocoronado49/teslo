@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CustomTextFormField extends StatelessWidget {
   final String? label;
   final String? hint;
-  final String? errorrMessage;
+  final String? errorMessage;
   final bool obscureText;
   final TextInputType? keyboardType;
   final Function(String)? onChanged;
@@ -13,7 +13,7 @@ class CustomTextFormField extends StatelessWidget {
     super.key,
     this.label,
     this.hint, 
-    this.errorrMessage,
+    this.errorMessage,
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
     this.onChanged, this.validator
@@ -61,7 +61,7 @@ class CustomTextFormField extends StatelessWidget {
           isDense: true,
           label: label != null ? Text(label!) : null,
           hintText: hint,
-          errorText: errorrMessage,
+          errorText: errorMessage,
           focusColor: colors.primary
         ),
       ),

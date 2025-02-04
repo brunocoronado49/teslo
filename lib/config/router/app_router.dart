@@ -1,11 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:teslo/config/router/app_router_notifier.dart';
-import 'package:teslo/features/auth/auth.dart';
-import 'package:teslo/features/auth/presentation/providers/auth_provider.dart';
-import 'package:teslo/features/products/products.dart';
+import 'package:teslo/features/auth/presentation/providers/providers.dart';
+import 'package:teslo/features/auth/presentation/screens/screens.dart';
+import 'package:teslo/features/products/presentation/screens/screens.dart';
+import 'app_router_notifier.dart';
 
 final goRouterProvider = Provider((ref) {
+
   final goRouterNotifier = ref.read(goRouterNotifierProvider);
 
   return GoRouter(
@@ -28,7 +29,7 @@ final goRouterProvider = Provider((ref) {
         builder: (context, state) => const RegisterScreen(),
       ),
 
-      ///* Products Routes
+      ///* Product Routes
       GoRoute(
         path: '/',
         builder: (context, state) => const ProductsScreen(),
@@ -36,25 +37,26 @@ final goRouterProvider = Provider((ref) {
     ],
 
     redirect: (context, state) {
-      final isGoingto = state.matchedLocation;
+      
+      final isGoingTo = state.fullPath;
       final authStatus = goRouterNotifier.authStatus;
 
-      if(isGoingto == '/splash' && authStatus == AuthStatus.checking) return null;
+      if ( isGoingTo == '/splash' && authStatus == AuthStatus.checking ) return null;
 
-      if(authStatus == AuthStatus.notAuthenticated) {
-        if(isGoingto == '/login' || isGoingto == '/register') return null;
+      if ( authStatus == AuthStatus.notAuthenticated ) {
+        if ( isGoingTo == '/login' || isGoingTo == '/register' ) return null;
 
         return '/login';
       }
 
-      if(authStatus == AuthStatus.authenticated) {
-        if(isGoingto == '/login' 
-          || isGoingto == '/register'
-          || isGoingto == '/splash') return '/';
+      if ( authStatus == AuthStatus.authenticated ) {
+        if ( isGoingTo == '/login' || isGoingTo == '/register' || isGoingTo == '/splash' ){
+           return '/';
+        }
       }
 
+
       return null;
-    }
+    },
   );
 });
-

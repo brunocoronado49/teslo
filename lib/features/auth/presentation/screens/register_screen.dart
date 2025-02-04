@@ -98,7 +98,7 @@ class _RegisterForm extends ConsumerWidget {
             label: 'Nombre completo',
             keyboardType: TextInputType.text,
             onChanged: ref.read(registerFormProvider.notifier).onNameChange,
-            errorrMessage: registerForm.isFormPosted 
+            errorMessage: registerForm.isFormPosted 
               ? registerForm.name.errorMessage
               : null,
           ),
@@ -108,7 +108,7 @@ class _RegisterForm extends ConsumerWidget {
             label: 'Correo',
             keyboardType: TextInputType.emailAddress,
             onChanged: ref.read(registerFormProvider.notifier).onEmailChange,
-            errorrMessage: registerForm.isFormPosted 
+            errorMessage: registerForm.isFormPosted 
               ? registerForm.email.errorMessage
               : null,
           ),
@@ -118,7 +118,7 @@ class _RegisterForm extends ConsumerWidget {
             label: 'Contraseña',
             obscureText: true,
             onChanged: ref.read(registerFormProvider.notifier).onPasswordChange,
-            errorrMessage: registerForm.isFormPosted
+            errorMessage: registerForm.isFormPosted
               ? registerForm.password.errorMessage
               : null,
           ),
@@ -129,7 +129,7 @@ class _RegisterForm extends ConsumerWidget {
             label: 'Repita la contraseña',
             obscureText: true,
             onChanged: ref.read(registerFormProvider.notifier).onPasswordChange,
-            errorrMessage: registerForm.isFormPosted
+            errorMessage: registerForm.isFormPosted
               ? registerForm.password.errorMessage
               : null,
           ),
