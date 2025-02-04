@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -31,14 +32,16 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox( height: 80 ),
     
-                Container(
-                  height: size.height - 260, // 80 los dos sizebox y 100 el ícono
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: scaffoldBackgroundColor,
-                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(100)),
+                FadeInUp(
+                  child: Container(
+                    height: size.height - 260, // 80 los dos sizebox y 100 el ícono
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: scaffoldBackgroundColor,
+                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(100)),
+                    ),
+                    child: const _LoginForm(),
                   ),
-                  child: const _LoginForm(),
                 )
               ],
             ),
