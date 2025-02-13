@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:teslo/features/products/domain/domain.dart';
+import 'products_repository_provider.dart';
 
 /// State
 class ProductsState {
@@ -71,4 +72,8 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 }
 
 /// Provider
+final productsProvider = StateNotifierProvider<ProductsNotifier, ProductsState>((ref) {
+  final productsRepository = ref.watch(productsRepositoryProvider);
+  return ProductsNotifier(productsRepository: productsRepository);
+});
 
