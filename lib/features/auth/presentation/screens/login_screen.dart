@@ -1,4 +1,3 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -100,6 +99,7 @@ class _LoginForm extends ConsumerWidget {
             errorMessage: loginForm.isFormPosted ?
                loginForm.password.errorMessage 
                : null,
+            onFieldSubmitted: (_) => ref.read(loginFormProvider.notifier).onFormSubmit(),
           ),
     
           const SizedBox( height: 30 ),
@@ -112,7 +112,7 @@ class _LoginForm extends ConsumerWidget {
               buttonColor: Colors.black,
               onPressed: loginForm.isPosting
                 ? null 
-                : ref.read(loginFormProvider.notifier).onFormSubmit
+                : ref.read(loginFormProvider.notifier).onFormSubmit()
             )
           ),
 
@@ -123,7 +123,7 @@ class _LoginForm extends ConsumerWidget {
             children: [
               const Text('¿No tienes cuenta?'),
               TextButton(
-                onPressed: ()=> context.push('/register'), 
+                onPressed: () => context.push('/register'), 
                 child: const Text('Crea una aquí')
               )
             ],

@@ -5,7 +5,7 @@ import 'package:teslo/config/config.dart';
 void main() async {
   await Environment.initEnv();
   runApp(
-    const ProviderScope(child: MyApp())
+    const ProviderScope(child: MyApp()),
   );
 }
 
