@@ -1,4 +1,3 @@
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 import 'package:teslo/features/auth/presentation/providers/auth_provider.dart';
@@ -68,7 +67,6 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
   }
 
 }
-
 
 //! 1 - State del provider
 class LoginFormState {
