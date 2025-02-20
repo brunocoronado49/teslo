@@ -11,7 +11,7 @@ class ProductCard extends StatelessWidget {
     return Column(
       children: [
         _ImageViewer(images: product.images),
-        Text(product.title),
+        Text(product.title, textAlign: TextAlign.center),
         const SizedBox(height: 20),
       ],
     );
@@ -28,10 +28,25 @@ class _ImageViewer extends StatelessWidget {
     if(images.isEmpty) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: Image.asset('assets/no-image.jpg'),
+        child: Image.asset(
+          'assets/no-image.jpg',
+          fit: BoxFit.cover,
+          height: 250,
+        ),
       );
     }
-    return Container();
+
+    return  ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: FadeInImage(
+        fit: BoxFit.cover,
+        height: 250,
+        fadeOutDuration: const Duration(milliseconds: 100),
+        fadeInDuration: const Duration(milliseconds: 200),
+        image: NetworkImage(images.first),
+        placeholder: const AssetImage('assets/bottle-loader.gif'),
+      ),
+    );
   }
 }
 
