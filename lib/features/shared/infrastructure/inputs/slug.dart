@@ -30,3 +30,4 @@ class Slug extends FormzInput<String, SlugError> {
     return null;
   }
 }
+
